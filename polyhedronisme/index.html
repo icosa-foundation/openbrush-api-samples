@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>polyH&eacute;dronisme Revived</title>
+<title>polyH&eacute;dronisme</title>
 <script type="text/javascript" src="libs/jquery-1.7.min.js"></script>
 <script type="text/javascript" src="libs/jquery.mousewheel.js"></script>
 <script type="text/javascript" src="libs/underscore-min.js"></script>
@@ -16,7 +16,7 @@
 <body>
 <div class="container">
 <h2 style="text-align:center;">
-  <span class="fadey">poly</span>H&eacute;d<span class="fadey">r</span>onisme <span style="font-size:10px;">revived<span>
+  <span class="fadey">poly</span>H&eacute;d<span class="fadey">r</span>onisme<span style="font-size:10px;">v0.2.1<span>
 </h2>
 
 <div class="canvaswrapper clearfix">
@@ -82,6 +82,7 @@
     <li>U<i>N</i> - 2N-sided cupola (N&ge;3, regular for 3,4,5)</li>
     <li>V<i>N</i> - 2N-sided anticupola (N&ge;3)</li>
     <li>J<i>N</i> - Nth Johnson Solid (1 to 92)</li>
+	<li>Z</i> - Square</li>
   </ul>
 
 <p>and <b>op</b> is one of these
@@ -105,28 +106,26 @@
   <li><b>w</b> - whirl</li>
   <li><b>q</b> - quinto</li>
   <li><b>l</b> - loft</li>
-  <!--
-  <li><b>h</b> - half (caution: requires even-sided faces, and can produce digons)</li>
-  <li><b>n</b> - needle</li>
-  <li><b>z</b> - zip</li>
-  -->
+  <li><b>K</b> - stake</li>
+  <li><b>L</b> - lace</li>
+  <li><b>I</b> - join-lace</li>
+  <li><b>P</b> - opposite-lace</i></li>
 </ul>
 
 <p>Also, some newer, experimental operators:</p>
 
 <ul>
-  <li><b>P</b> - from <i><b>P</b>erspectiva Corporum Regularium</i></li>
   <li><b>n<i>N</i></b> - i<b>n</b>setN </li>
   <li><b>x<i>N</i></b> - e<b>x</b>trudeN </li>
   <li><b>Z</b> - triangulate</li>
   <li><b>H</b>(<i>inset</i>,<i>depth</i>) - hollow - useful for 3D printing, makes a
     hollow-faced shell version of the polyhedron,this applies the
-    hollowing operator on all faces, insetting by <i>inset</i> (scaled from 0 to 1), and 
+    hollowing operator on all faces, insetting by <i>inset</i> (scaled from 0 to 1), and
     with a shell thickness of <i>depth</i>
   </li>
   <!--<li><b>H</b> - hollow/skeletonize,  only apply it once in
   a recipe!</li>-->
-  <li><b>u<i>N</i></b> - limited version of the Goldberg-Coxeter u_n operator 
+  <li><b>u<i>N</i></b> - limited version of the Goldberg-Coxeter u_n operator
   (for triangular meshes only)</li>
 </ul>
 
@@ -142,19 +141,19 @@
   (can be negative)
   </li>
 </ul>
-  
-<p>Note that for most of the above operations, while the <i>topology</i> of the result 
-  is uniquely specified, a great variety of <i>geometry</i> is possible. For maximum 
-  flexibility, the above operators do not enforce convexity of the polyhedron, or 
-  planarity of the faces, at each step. If these properties are desired in the final 
-  result, the following geometric "refinement" operators can be used. These operators 
+
+<p>Note that for most of the above operations, while the <i>topology</i> of the result
+  is uniquely specified, a great variety of <i>geometry</i> is possible. For maximum
+  flexibility, the above operators do not enforce convexity of the polyhedron, or
+  planarity of the faces, at each step. If these properties are desired in the final
+  result, the following geometric "refinement" operators can be used. These operators
   are for canonicalizing the polyhedral shape, and are mainly intended for making
   the more traditional, convex polyhedra more symmetric:</p>
 
 <ul>
   <li><b>A<i>N</i></b> - convex spherical <b>A</b>djustment. Iterates N times. May give more pleasing symmetry,
     but can be unstable for certain shapes. Usually an N of 20-40 is enough.</li>
-  <li><b>C<i>N</i></b> - proper <b>C</b>anonicalization, iteratively refines shape N times. 
+  <li><b>C<i>N</i></b> - proper <b>C</b>anonicalization, iteratively refines shape N times.
     Flattens faces. A typical N is 200 or 300.</li>
 </ul>
 
@@ -163,7 +162,7 @@
 <b> 3D Printing </b>
 <p>You can export these shapes in forms appropriate for 3D printing by
 shapeways. Export in VRML2 format to preserve face colors if you want
-to use their colored fused-sand process.  You'll probably want to rescale 
+to use their colored fused-sand process.  You'll probably want to rescale
 the exported geometry to a non-tiny size.</p>
 
 <b>More Information</b>
@@ -175,10 +174,10 @@ the exported geometry to a non-tiny size.</p>
 </ul>
 <p>Related Sites</p>
 <ul>
-  <li><a href="https://polyhedra.tessera.li/">Interactive Polyhedra Viewer</a> 
+  <li><a href="https://polyhedra.tessera.li/">Interactive Polyhedra Viewer</a>
     by <a href="https://www.tessera.li/">@tesseralis</a></li>
 <li><a href="http://dmccooey.com/polyhedra/index.html">David McCooey's Visual Polyhedra</a></li>
-<li><a href="http://www.antiprism.com/index.html">Antiprism Polyhedral Modelling Software</a> 
+<li><a href="http://www.antiprism.com/index.html">Antiprism Polyhedral Modelling Software</a>
   - can do much more than conway operators!</li>
 <li><a href="https://www.software3d.com/Stella.php">Stella Polyhedral Modelling Software</a></li>
 </ul>

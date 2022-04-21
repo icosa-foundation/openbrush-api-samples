@@ -15,8 +15,8 @@
 //===================================================================================================
 
 // import math functions to local namespace
-const { random, round, floor, sqrt, 
-        sin, cos, tan, asin, acos, atan, 
+const { random, round, floor, sqrt,
+        sin, cos, tan, asin, acos, atan,
         abs, pow, log,
         PI, LN10
       } = Math;
@@ -48,29 +48,29 @@ const randomchoice = function(array){
 };
 
 // 3d scalar multiplication
-const mult = (c, vec) => 
+const mult = (c, vec) =>
   [c*vec[0], c*vec[1], c*vec[2]];
 
 // 3d element-wise multiply
-const _mult = (vec1, vec2) => 
+const _mult = (vec1, vec2) =>
   [vec1[0]*vec2[0], vec1[1]*vec2[1], vec1[2]*vec2[2]];
 
 // 3d vector addition
-const add = (vec1, vec2) => 
+const add = (vec1, vec2) =>
   [vec1[0]+vec2[0], vec1[1]+vec2[1], vec1[2]+vec2[2]];
 
 // 3d vector subtraction
-const sub = (vec1, vec2) => 
+const sub = (vec1, vec2) =>
   [vec1[0]-vec2[0], vec1[1]-vec2[1], vec1[2]-vec2[2]];
 
 // 3d dot product
-const dot = (vec1, vec2) => 
+const dot = (vec1, vec2) =>
   (vec1[0]*vec2[0]) + (vec1[1]*vec2[1]) + (vec1[2]*vec2[2]);
 
 // 3d cross product d1 x d2
-const cross = (d1, d2) => 
-  [(d1[1]*d2[2]) - (d1[2]*d2[1]), 
-   (d1[2]*d2[0]) - (d1[0]*d2[2]),  
+const cross = (d1, d2) =>
+  [(d1[1]*d2[2]) - (d1[2]*d2[1]),
+   (d1[2]*d2[0]) - (d1[0]*d2[2]),
    (d1[0]*d2[1]) - (d1[1]*d2[0]) ];
 
 // vector norm
@@ -86,9 +86,9 @@ const unit = vec => mult(1 / sqrt(mag2(vec)), vec);
 const midpoint = (vec1, vec2) => mult(1/2.0, add(vec1, vec2));
 
 // parametric segment between vec1, vec2 w. parameter t ranging from 0 to 1
-const tween = (vec1, vec2, t) => 
-  [((1-t)*vec1[0]) + (t*vec2[0]), 
-   ((1-t)*vec1[1]) + (t*vec2[1]), 
+const tween = (vec1, vec2, t) =>
+  [((1-t)*vec1[0]) + (t*vec2[0]),
+   ((1-t)*vec1[1]) + (t*vec2[1]),
    ((1-t)*vec1[2]) + (t*vec2[2])];
 
 // uses above to go one-third of the way along vec1->vec2 line
@@ -108,7 +108,7 @@ const edgeDist = (v1, v2) => sqrt(mag2(tangentPoint(v1, v2)));
 
 // square of distance from point v3 to line segment v1...v2
 // http://mathworld.wolfram.com/Point-LineDistance3-Dimensional.html
-// calculates min distance from 
+// calculates min distance from
 // point v3 to finite line segment between v1 and v2
 const linePointDist2 = function(v1, v2, v3) {
   let result;
@@ -117,10 +117,10 @@ const linePointDist2 = function(v1, v2, v3) {
   const d23 = sub(v2, v3);
   const m2 = mag2(d21);
   const t = -dot(d13, d21)/m2;
-  if (t <= 0) { 
+  if (t <= 0) {
     // closest to point beyond v1, clip to |v3-v1|^2
     result = mag2(d13);
-  } else if (t >= 1) { 
+  } else if (t >= 1) {
     // closest to point beyond v2, clip to |v3-v2|^2
     result = mag2(d23);
   } else {
@@ -129,7 +129,7 @@ const linePointDist2 = function(v1, v2, v3) {
   }
   return result;
 };
-  
+
 // find vector orthogonal to plane of 3 pts
 // -- do the below algos assume this be normalized or not?
 const orthogonal = function(v1,v2,v3) {
@@ -169,7 +169,7 @@ const calcCentroid = function(vertices) {
 // calculate average normal vector for array of vertices
 const normal = function(vertices) {
   // running sum of normal vectors
-  let normalV = [0,0,0]; 
+  let normalV = [0,0,0];
   let [v1, v2] = vertices.slice(-2);
   for (let v3 of vertices) {
     normalV = add(normalV, orthogonal(v1, v2, v3));
@@ -310,7 +310,7 @@ const vec_rotm = function(angle, x, y, z) {
       const x2 = x*x;
       const y2 = y*y;
       const z2 = z*z;
-      m = 
+      m =
         [[1-(2*(y2+z2)*sinA2), 2*((x*y*sinA2)+(z*sinA*cosA)), 2*((x*z*sinA2)-(y*sinA*cosA))],
         [2*((y*x*sinA2)-(z*sinA*cosA)), 1-(2*(z2+x2)*sinA2), 2*((y*z*sinA2)+(x*sinA*cosA))],
         [2*((z*x*sinA2)+(y*sinA*cosA)), 2*((z*y*sinA2)-(x*sinA*cosA)), 1-(2*(x2+y2)*sinA2)]];
@@ -323,21 +323,21 @@ const vec_rotm = function(angle, x, y, z) {
 // scales perspective such that inside depth regions min_real_depth <--> max_real_depth
 // perspective lengths vary no more than:   desired_ratio
 // with target dimension of roughly length: desired_length
-const perspT = function(vec3, max_real_depth, min_real_depth, 
+const perspT = function(vec3, max_real_depth, min_real_depth,
                         desired_ratio, desired_length) {
-  const z0 = 
+  const z0 =
     ((max_real_depth * desired_ratio) - min_real_depth) / (1-desired_ratio);
-  const scalefactor = 
+  const scalefactor =
     (desired_length * desired_ratio) / (1-desired_ratio);
   // projected [X, Y]
   return [(scalefactor*vec3[0])/(vec3[2]+z0), (scalefactor*vec3[1])/(vec3[2]+z0)];
 };
 
 // Inverses perspective transform by projecting plane onto a unit sphere at origin
-const invperspT = 
-  function(x, y, dx, dy, max_real_depth, min_real_depth, 
+const invperspT =
+  function(x, y, dx, dy, max_real_depth, min_real_depth,
            desired_ratio, desired_length) {
-  const z0 = 
+  const z0 =
     ((max_real_depth * desired_ratio) - min_real_depth)/(1-desired_ratio);
   const s = (desired_length * desired_ratio)/(1-desired_ratio);
   const xp = x-dx;
@@ -347,11 +347,11 @@ const invperspT =
   const xp2 = xp*xp;
   const yp2 = yp*yp;
 
-  const xsphere = ((2*s*xp*z0) 
-                    + sqrt((4*s2*xp2*z02) 
+  const xsphere = ((2*s*xp*z0)
+                    + sqrt((4*s2*xp2*z02)
                     + (4*xp2*(s2+xp2+yp2)*(1-z02))))/(2.0*(s2+xp2+yp2));
-  const ysphere = (((s*yp*z0)/(s2+xp2+yp2)) 
-                   + ((yp*sqrt((4*s2*z02) 
+  const ysphere = (((s*yp*z0)/(s2+xp2+yp2))
+                   + ((yp*sqrt((4*s2*z02)
                    + (4*(s2+xp2+yp2)*(1-z02))))/(2.0*(s2+xp2+yp2))));
   const zsphere = sqrt(1 - (xsphere*xsphere) - (ysphere*ysphere));
 
@@ -420,7 +420,7 @@ const palette = function(n) {
   const k = n % PALETTE.length;
   return hextofloats(PALETTE[k])
 };
-                     
+
 // converts [h,s,l] float args to [r,g,b] list
 function hsl2rgb(h, s, l) {
   let r, g, b;
@@ -556,7 +556,7 @@ class polyhedron {
     this.vertices  = verts || new Array();
     this.name = name  || "null polyhedron";
   }
-  
+
   // return a non-redundant list of the polyhedron's edges
   edges() {
     let e, a, b;
@@ -574,7 +574,7 @@ class polyhedron {
     }
     return _.values(uniqEdges);
   }
-      
+
   // get array of face centers
   centers() {
     const centersArray = [];
@@ -621,9 +621,9 @@ class polyhedron {
       }
     }
     // This is normalized if rescaling has happened.
-    return sqrt(min2); 
+    return sqrt(min2);
   }
-    
+
   minFaceRadius() {
     let min2 = Number.MAX_VALUE;
     const nFaces = this.faces.length;
@@ -988,11 +988,11 @@ const cupola = function(n, alpha, height) {
   }
 
   let s = 1.0;
-  // alternative face/height scaling 
+  // alternative face/height scaling
   //let rb = s / 2 / sin(PI / 2 / n - alpha);
   let rb = s / 2 / sin(PI / 2 / n);
   let rt = s / 2 / sin(PI / n);
-  if (height===undefined) { 
+  if (height===undefined) {
     height = (rb - rt);
     // set correct height for regularity for n=3,4,5
     if (2 <= n && n <= 5) {
@@ -1005,17 +1005,17 @@ const cupola = function(n, alpha, height) {
   }
   // fill vertices
   for (i = 0; i < n; i++) {
-    poly.vertices[2*i] = [rb * cos(PI*(2*i)/n + PI/2/n+alpha), 
+    poly.vertices[2*i] = [rb * cos(PI*(2*i)/n + PI/2/n+alpha),
                           rb * sin(PI*(2*i)/n + PI/2/n+alpha),
                           0.0];
-    poly.vertices[2*i+1] = [rb * cos(PI*(2*i+1)/n + PI/2/n-alpha), 
-                            rb * sin(PI*(2*i+1)/n + PI/2/n-alpha), 
+    poly.vertices[2*i+1] = [rb * cos(PI*(2*i+1)/n + PI/2/n-alpha),
+                            rb * sin(PI*(2*i+1)/n + PI/2/n-alpha),
                             0.0];
-    poly.vertices[2*n+i] = [rt * cos(2*PI*i/n), 
-                            rt * sin(2*PI*i/n), 
+    poly.vertices[2*n+i] = [rt * cos(2*PI*i/n),
+                            rt * sin(2*PI*i/n),
                             height];
   }
-  
+
   poly.faces.push(__range__(2*n-1, 0, true)); // base
   poly.faces.push(__range__(2*n, 3*n-1, true)); // top
   for (i = 0; i < n; i++) { // n triangular sides and n square sides
@@ -1023,7 +1023,7 @@ const cupola = function(n, alpha, height) {
     poly.faces.push([2*i, (2*i+1)%(2*n), 2*n+(i+1)%n, 2*n+i]);
   }
 
-  return poly;  
+  return poly;
 }
 
 const anticupola = function(n, alpha, height) {
@@ -1039,11 +1039,11 @@ const anticupola = function(n, alpha, height) {
   }
 
   let s = 1.0;
-  // alternative face/height scaling 
+  // alternative face/height scaling
   //let rb = s / 2 / sin(PI / 2 / n - alpha);
   let rb = s / 2 / sin(PI / 2 / n);
   let rt = s / 2 / sin(PI / n);
-  if (height===undefined) { 
+  if (height===undefined) {
     height = (rb - rt);
   }
   // init 3N vertices
@@ -1052,17 +1052,17 @@ const anticupola = function(n, alpha, height) {
   }
   // fill vertices
   for (i = 0; i < n; i++) {
-    poly.vertices[2*i] = [rb * cos(PI*(2*i)/n + alpha), 
+    poly.vertices[2*i] = [rb * cos(PI*(2*i)/n + alpha),
                           rb * sin(PI*(2*i)/n + alpha),
                           0.0];
-    poly.vertices[2*i+1] = [rb * cos(PI*(2*i+1)/n - alpha), 
-                            rb * sin(PI*(2*i+1)/n - alpha), 
+    poly.vertices[2*i+1] = [rb * cos(PI*(2*i+1)/n - alpha),
+                            rb * sin(PI*(2*i+1)/n - alpha),
                             0.0];
-    poly.vertices[2*n+i] = [rt * cos(2*PI*i/n), 
-                            rt * sin(2*PI*i/n), 
+    poly.vertices[2*n+i] = [rt * cos(2*PI*i/n),
+                            rt * sin(2*PI*i/n),
                             height];
   }
-  
+
   poly.faces.push(__range__(2*n-1, 0, true)); // base
   poly.faces.push(__range__(2*n, 3*n-1, true)); // top
   for (i = 0; i < n; i++) { // n triangular sides and n square sides
@@ -1071,7 +1071,7 @@ const anticupola = function(n, alpha, height) {
     poly.faces.push([2*n+(i+1)%n, 2*n+(i)%n, (2*i+1)%(2*n)]);
   }
 
-  return poly;  
+  return poly;
 }// Polyhédronisme
 //===================================================================================================
 //
@@ -6275,10 +6275,10 @@ class polyflag {
 // ORIENTATION -must- be dealt with properly to make a manifold (correct) mesh.
 // Specifically, no edge v1->v2 can ever be crossed in the -same direction- by
 // two different faces
-// 
+//
 // call topoly() to assemble flags into polyhedron structure by following the orbits
 // of the vertex mapping stored in the flagset for each new face
-// 
+//
 // set name as appropriate
 
 // helper func to insure unique names of midpoints
@@ -6620,7 +6620,7 @@ const whirl = function(poly, n) {
   let i, v;
   console.log(`Taking whirl of ${poly.name}...`);
   if (!n) { n = 0; }
-  
+
   const flag = new polyflag();
 
   // each old vertex is a new vertex
@@ -6647,7 +6647,7 @@ const whirl = function(poly, n) {
       // New vertices near center of face
       const cv1name = `center${i}~${v1}`;
       const cv2name = `center${i}~${v2}`;
-      flag.newV(cv1name, unit(oneThird(centers[i], v1_2))); 
+      flag.newV(cv1name, unit(oneThird(centers[i], v1_2)));
       const fname = i+"f"+v1;
       // New hexagon for each original edge
       flag.newFlag(fname, cv1name,   v1+"~"+v2);
@@ -6656,9 +6656,9 @@ const whirl = function(poly, n) {
       flag.newFlag(fname, `v${v2}`,  v2+"~"+v3); //*
       flag.newFlag(fname, v2+"~"+v3, cv2name);
       flag.newFlag(fname, cv2name,   cv1name);
-      // New face in center of each old face      
+      // New face in center of each old face
       flag.newFlag(`c${i}`, cv1name, cv2name);
-      
+
       [v1, v2] = [v2, v3];
     }
   } // shift over one
@@ -6690,7 +6690,7 @@ const quinto = function(poly){
       flag.newV(`inner_${i}_` + midName(v1,v2), innerpt);
       // and add the old corner-vertex
       flag.newV(`${v2}`, poly.vertices[v2]);
-    
+
       // pentagon for each vertex in original face
       flag.newFlag(`f${i}_${v2}`, `inner_${i}_`+midName(v1, v2), midName(v1, v2));
       flag.newFlag(`f${i}_${v2}`, midName(v1, v2), `${v2}`);
@@ -6734,7 +6734,7 @@ const insetN = function(poly, n, inset_dist, popout_dist){
     f = poly.faces[i];
     if ((f.length === n) || (n === 0)) {
       for (v of f) {
-        flag.newV(`f${i}v${v}`, add(tween(poly.vertices[v],centers[i],inset_dist), 
+        flag.newV(`f${i}v${v}`, add(tween(poly.vertices[v],centers[i],inset_dist),
                                     mult(popout_dist,normals[i])));
       }
     }
@@ -6789,6 +6789,137 @@ const loft = function(poly, n, alpha){
 }
 
 
+// Lace
+// ----------------------------------------------------------------------------------------------
+const lace = function (poly) {
+  console.log(`Taking lace of ${poly.name}...`);
+  const flag = new polyflag();
+
+  // For each face f in the original poly
+  for (let i = 0; i < poly.faces.length; i++) {
+    const f = poly.faces[i];
+    let centroid = calcCentroid(f.map(idx => poly.vertices[idx]))
+    // walk over face vertex-triplets
+    let [v1, v2] = f.slice(-2);
+    for (let v3 of f) {
+      // for each face-corner, we make one new point:
+      let midpt = midpoint(poly.vertices[v1], poly.vertices[v2]);
+      let innerpt = midpoint(midpt, centroid);
+      flag.newV(`inner_${i}_` + midName(v1, v2), innerpt);
+      // and add the old corner-vertex
+      flag.newV(`v${v2}`, poly.vertices[v2]);
+
+      // triangle at vertex for each vertex in original face
+      flag.newFlag(`f${i}_${v2}`, `inner_${i}_` + midName(v1, v2), `v${v2}`);
+      flag.newFlag(`f${i}_${v2}`, `v${v2}`, `inner_${i}_` + midName(v2, v3));
+      flag.newFlag(`f${i}_${v2}`, `inner_${i}_` + midName(v2, v3), `inner_${i}_` + midName(v1, v2));
+
+      flag.newFlag(`f${i}_` + midName(v1, v2), `inner_${i}_` + midName(v1, v2), `v${v1}`);
+      flag.newFlag(`f${i}_` + midName(v1, v2), `v${v1}`, `v${v2}`);
+      flag.newFlag(`f${i}_` + midName(v1, v2), `v${v2}`, `inner_${i}_` + midName(v1, v2));
+
+      // inner rotated face of same vertex-number as original
+      flag.newFlag(`f_in_${i}`, `inner_${i}_` + midName(v1, v2), `inner_${i}_` + midName(v2, v3));
+
+      // shift over one
+      [v1, v2] = [v2, v3];
+    }
+  }
+
+  // flag.check();
+  const newpoly = flag.topoly();
+  newpoly.name = `L${poly.name}`;
+  return newpoly;
+};
+
+
+// Join - Lace
+// ----------------------------------------------------------------------------------------------
+const joinlace = function (poly) {
+  console.log(`Taking joinlace of ${poly.name}...`);
+  const flag = new polyflag();
+
+  // For each face f in the original poly
+  for (let i = 0; i < poly.faces.length; i++) {
+    const f = poly.faces[i];
+    let centroid = calcCentroid(f.map(idx => poly.vertices[idx]))
+    // walk over face vertex-triplets
+    let [v1, v2] = f.slice(-2);
+    for (let v3 of f) {
+      // for each face-corner, we make one new point:
+      let midpt = midpoint(poly.vertices[v1], poly.vertices[v2]);
+      let innerpt = midpoint(midpt, centroid);
+      flag.newV(`inner_${i}_` + midName(v1, v2), innerpt);
+      // and add the old corner-vertex
+      flag.newV(`v${v2}`, poly.vertices[v2]);
+
+      // triangle at vertex for each vertex in original face
+      flag.newFlag(`f${i}_${v2}`, `inner_${i}_` + midName(v1, v2), `v${v2}`);
+      flag.newFlag(`f${i}_${v2}`, `v${v2}`, `inner_${i}_` + midName(v2, v3));
+      flag.newFlag(`f${i}_${v2}`, `inner_${i}_` + midName(v2, v3), `inner_${i}_` + midName(v1, v2));
+
+      flag.newFlag(`fj` + midName(v1, v2), `inner_${i}_` + midName(v1, v2), `v${v1}`);
+      // flag.newFlag(`f` + midName(v1, v2), `v${v1}`, `v${v2}`);
+      flag.newFlag(`fj` + midName(v1, v2), `v${v2}`, `inner_${i}_` + midName(v1, v2));
+
+      // inner rotated face of same vertex-number as original
+      flag.newFlag(`f_in_${i}`, `inner_${i}_` + midName(v1, v2), `inner_${i}_` + midName(v2, v3));
+
+      // shift over one
+      [v1, v2] = [v2, v3];
+    }
+  }
+
+  // flag.check();
+  const newpoly = flag.topoly();
+  newpoly.name = `I${poly.name}`;
+  return newpoly;
+};
+
+
+// Stake
+// ----------------------------------------------------------------------------------------------
+const stake = function (poly) {
+  console.log(`Taking stake of ${poly.name}...`);
+  const flag = new polyflag();
+
+  // For each face f in the original poly
+  for (let i = 0; i < poly.faces.length; i++) {
+    const f = poly.faces[i];
+    let centroid = calcCentroid(f.map(idx => poly.vertices[idx]))
+    // face centroid is a new point
+    flag.newV(`center${i}`, centroid);
+    // walk over face vertex-triplets
+    let [v1, v2] = f.slice(-2);
+    for (let v3 of f) {
+      // for each face-corner, we make one new point:
+      let midpt = midpoint(poly.vertices[v1], poly.vertices[v2]);
+      let innerpt = midpoint(midpt, centroid);
+      flag.newV(`inner_${i}_` + midName(v1, v2), innerpt);
+      // and add the old corner-vertex
+      flag.newV(`v${v2}`, poly.vertices[v2]);
+
+      flag.newFlag(`f${i}_${v2}`, `inner_${i}_` + midName(v1, v2), `v${v2}`);
+      flag.newFlag(`f${i}_${v2}`, `v${v2}`, `inner_${i}_` + midName(v2, v3));
+      flag.newFlag(`f${i}_${v2}`, `inner_${i}_` + midName(v2, v3), `center${i}`);
+      flag.newFlag(`f${i}_${v2}`, `center${i}`, `inner_${i}_` + midName(v1, v2));
+
+      flag.newFlag(`f${i}_` + midName(v1, v2), `inner_${i}_` + midName(v1, v2), `v${v1}`);
+      flag.newFlag(`f${i}_` + midName(v1, v2), `v${v1}`, `v${v2}`);
+      flag.newFlag(`f${i}_` + midName(v1, v2), `v${v2}`, `inner_${i}_` + midName(v1, v2));
+
+      // shift over one
+      [v1, v2] = [v2, v3];
+    }
+  }
+
+  // flag.check();
+  const newpoly = flag.topoly();
+  newpoly.name = `K${poly.name}`;
+  return newpoly;
+};
+
+
 // Hollow (skeletonize)
 // ------------------------------------------------------------------------------------------
 const hollow = function(poly, inset_dist, thickness){
@@ -6814,7 +6945,7 @@ const hollow = function(poly, inset_dist, thickness){
     f = poly.faces[i];
     for (v of f) {
       flag.newV(`fin${i}v${v}`, tween(poly.vertices[v],centers[i],inset_dist));
-      flag.newV(`findown${i}v${v}`, add(tween(poly.vertices[v],centers[i],inset_dist), 
+      flag.newV(`findown${i}v${v}`, add(tween(poly.vertices[v],centers[i],inset_dist),
                                         mult(-1*thickness,normals[i])));
     }
   }
@@ -6920,7 +7051,7 @@ const perspectiva1 = function(poly){
 const trisub = function(poly, n) {
   console.log(`Taking trisub of ${poly.name}...`);
   if (!n) { n = 2; }
-  
+
   // No-Op for non-triangular meshes.
   for (let fn = 0; fn < poly.faces.length; fn++) {
     if(poly.faces[fn].length != 3){
@@ -6949,7 +7080,7 @@ const trisub = function(poly, n) {
     }
   }
 
-  // The above vertices are redundant along original edges, 
+  // The above vertices are redundant along original edges,
   // we need to build an index map into a uniqueified list of them.
   // We identify vertices that are closer than a certain epsilon distance.
   const EPSILON_CLOSE = 1.0e-8;
@@ -6973,15 +7104,15 @@ const trisub = function(poly, n) {
   for (fn = 0; fn < poly.faces.length; fn++) {
     for (let i = 0; i < n; i++) {
       for (let j = 0; j+i < n; j++) {
-        faces.push([uniqmap[vmap[`v${fn}-${i}-${j}`]], 
-                    uniqmap[vmap[`v${fn}-${i+1}-${j}`]], 
+        faces.push([uniqmap[vmap[`v${fn}-${i}-${j}`]],
+                    uniqmap[vmap[`v${fn}-${i+1}-${j}`]],
                     uniqmap[vmap[`v${fn}-${i}-${j+1}`]]])
       }
     }
     for (let i = 1; i < n; i++) {
       for (let j = 0; j+i < n; j++) {
-        faces.push([uniqmap[vmap[`v${fn}-${i}-${j}`]], 
-                    uniqmap[vmap[`v${fn}-${i}-${j+1}`]], 
+        faces.push([uniqmap[vmap[`v${fn}-${i}-${j}`]],
+                    uniqmap[vmap[`v${fn}-${i}-${j+1}`]],
                     uniqmap[vmap[`v${fn}-${i-1}-${j+1}`]]])
       }
     }
@@ -6991,10 +7122,111 @@ const trisub = function(poly, n) {
   const newpoly = new polyhedron();
   newpoly.name = `u${n}${poly.name}`;
   newpoly.faces = faces;
-  newpoly.vertices = uniqVs; 
+  newpoly.vertices = uniqVs;
 
   return newpoly;
 };
+
+// Quad subdivision -- not good enough, only works on cube, as faces aren't necessarily planar.
+const quadsub = function (poly, n) {
+  console.log(`Taking quadsub of ${poly.name}...`);
+  if (!n) { n = 2; }
+
+  // No-Op for non-quad meshes.
+  for (let fn = 0; fn < poly.faces.length; fn++) {
+    if (poly.faces[fn].length !== 4) {
+      return poly;
+    }
+  }
+
+  // Calculate redundant set of new vertices for subdivided mesh.
+  let newVs = [];
+  let vmap = {};
+  let pos = 0;
+  for (let fn = 0; fn < poly.faces.length; fn++) {
+    const f = poly.faces[fn];
+    let [i1, i2, i3, i4] = f.slice(-4);
+    const v1 = poly.vertices[i1];
+    const v2 = poly.vertices[i2];
+    const v3 = poly.vertices[i3];
+    const v4 = poly.vertices[i4];
+    const v21 = sub(v2, v1);
+    const v32 = sub(v3, v2);
+    const v41 = sub(v4, v1);
+    const v34 = sub(v3, v4);
+    // lock edges
+    for (let i = 0; i <= n; i++) {
+      vmap[`v${fn}-${i}-${0}`] = pos++;
+      newVs.push(add(mult(i / n, v21), v1));
+      vmap[`v${fn}-${i}-${n}`] = pos++;
+      newVs.push(add(mult(i / n, v34), v4));
+      vmap[`v${fn}-${0}-${i}`] = pos++;
+      newVs.push(add(mult(i / n, v41), v1));
+      vmap[`v${fn}-${n}-${i}`] = pos++;
+      newVs.push(add(mult(i / n, v32), v2));
+    }
+    for (let i = 1; i < n; i++) {
+      for (let j = 1; j < n; j++) {
+        let a1 = (pow(i / n, 2) + pow(j / n, 2));
+        let a2 = (pow((n - i) / n, 2) + pow((j / n), 2));
+        let a3 = (pow((n - i) / n, 2) + pow(((n - j) / n), 2));
+        let a4 = (pow(i / n, 2) + pow(((n - j) / n), 2));
+        let asum = a1 + a2 + a3 + a4;
+        a1 /= asum;
+        a2 /= asum;
+        a3 /= asum;
+        a4 /= asum;
+        let v = add(add(mult(a1, v1), mult(a2, v2)), add(mult(a3, v3), mult(a4, v4)));
+        // let v = add(add(v1, mult(i * 1.0 / n, v21)), mult(j * 1.0 / n, v41));
+        vmap[`v${fn}-${i}-${j}`] = pos++;
+        newVs.push(v);
+      }
+    }
+  }
+
+  // The above vertices are redundant along original edges,
+  // we need to build an index map into a uniqueified list of them.
+  // We identify vertices that are closer than a certain epsilon distance.
+  const EPSILON_CLOSE = 1.0e-8;
+  let uniqVs = [];
+  let newpos = 0;
+  let uniqmap = {};
+  for (const [i, v] of newVs.entries()) {
+    if (i in uniqmap) { continue; } // already mapped
+    uniqmap[i] = newpos;
+    uniqVs.push(v);
+    for (let j = i + 1; j < newVs.length; j++) {
+      let w = newVs[j];
+      if (mag(sub(v, w)) < EPSILON_CLOSE) {
+        uniqmap[j] = newpos;
+      }
+    }
+    newpos++;
+  }
+
+  let faces = [];
+  for (let fn = 0; fn < poly.faces.length; fn++) {
+    for (let i = 0; i < n; i++) {
+      for (let j = 0; j < n; j++) {
+        faces.push([
+          uniqmap[vmap[`v${fn}-${i}-${j}`]],
+          uniqmap[vmap[`v${fn}-${i + 1}-${j}`]],
+          uniqmap[vmap[`v${fn}-${i + 1}-${j + 1}`]],
+          uniqmap[vmap[`v${fn}-${i}-${j + 1}`]]])
+      }
+    }
+  }
+
+  // Create new polygon out of faces and unique vertices.
+  const newpoly = new Polyhedron();
+  newpoly.name = `O${n}${poly.name}`;
+  newpoly.faces = faces;
+  newpoly.vertices = uniqVs;
+
+  return newpoly;
+};
+
+
 // Polyhédronisme
 //===================================================================================================
 //
@@ -7028,7 +7260,7 @@ const trisub = function(poly, n) {
 // adjusts vertices on edges such that each edge is tangent to an origin sphere
 const tangentify = function(vertices, edges) {
   // hack to improve convergence
-  const STABILITY_FACTOR = 0.1; 
+  const STABILITY_FACTOR = 0.1;
   // copy vertices
   const newVs = copyVecArray(vertices);
   for (let e of edges) {
@@ -7048,7 +7280,7 @@ const recenter = function(vertices, edges) {
   const edgecenters = edges.map(([a, b])=>tangentPoint(vertices[a], vertices[b]));
   let polycenter = [0, 0, 0];
   // sum centers to find center of gravity
-  for (let v of edgecenters) { 
+  for (let v of edgecenters) {
     polycenter = add(polycenter, v);
   }
   polycenter = mult(1/edges.length, polycenter);
@@ -7077,7 +7309,7 @@ const planarize = function(vertices, faces) {
       n = mult(-1.0, n);
     }
     for (v of f) {  // project (vertex - centroid) onto normal, subtract off this component
-      newVs[v] = add(newVs[v], 
+      newVs[v] = add(newVs[v],
                      mult(dot(mult(STABILITY_FACTOR, n), sub(c, vertices[v])), n));
     }
   }
@@ -7086,7 +7318,7 @@ const planarize = function(vertices, faces) {
 
 // combines above three constraint adjustments in iterative cycle
 const canonicalize = function(poly, Niter) {
-  if (!Niter) { 
+  if (!Niter) {
     Niter = 1;
   }
   console.log(`Canonicalizing ${poly.name}...`);
@@ -7099,7 +7331,7 @@ const canonicalize = function(poly, Niter) {
     newVs = tangentify(newVs, edges);
     newVs = recenter(newVs, edges);
     newVs = planarize(newVs, faces);
-    maxChange = _.max(_.map(_.zip(newVs, oldVs), 
+    maxChange = _.max(_.map(_.zip(newVs, oldVs),
                             ([x, y])=>mag(sub(x, y))
                             ));
     if (maxChange < 1e-8) {
@@ -7241,9 +7473,9 @@ const getDiagonals = function(verts){
   };
 
   const IntersectProp = function(Va, Vb, Vc, Vd) {
-    if (Collinear(Va, Vb, Vc) || Collinear(Va, Vb, Vd) || 
-        Collinear(Vc, Vd, Va) || Collinear(Vc, Vd, Vb)) { 
-      return false; 
+    if (Collinear(Va, Vb, Vc) || Collinear(Va, Vb, Vd) ||
+        Collinear(Vc, Vd, Va) || Collinear(Vc, Vd, Vb)) {
+      return false;
     }
     return XOR(Left(Va, Vb, Vc), Left(Va, Vb, Vd)) && XOR(Left(Vc, Vd, Va), Left(Vc, Vd, Vb));
   };
@@ -7252,7 +7484,7 @@ const getDiagonals = function(verts){
     if (IntersectProp(Va, Vb, Vc, Vd)) {
       return true;
     } else {
-      if (Between(Va, Vb, Vc) || Between(Va, Vb, Vd) || 
+      if (Between(Va, Vb, Vc) || Between(Va, Vb, Vd) ||
           Between(Vc, Vd, Va) || Between(Vc, Vd, Vb)) {
         return true;
       } else {
@@ -7274,7 +7506,7 @@ const getDiagonals = function(verts){
     let c = 0;
     while (true) {
       const c1 = (c+1+facelen)%facelen;
-      if ((c !== a) && (c1 !== a) && (c !== b) && (c1 !== b) && 
+      if ((c !== a) && (c1 !== a) && (c !== b) && (c1 !== b) &&
           IntersectProp(verts[a], verts[b], verts[c], verts[c1])) {
         return false;
       }
@@ -7353,7 +7585,7 @@ const diagsToTris = function(f,diags){
   const edges = [];
   const redges = [];
   // get edges from faces as assoc arrays
-  for (let [v1, v2] of 
+  for (let [v1, v2] of
        (__range__(0, f.length-1, true).map((i) => [i,(i+1)%f.length]))) {
     edges[v1]  = [v2];
     redges[v2] = [v1];
@@ -7543,10 +7775,13 @@ const opmap = {
   "n": insetN, //-->needle
   "x": extrudeN,
   "l": loft,
+  "L": lace,
+  "I": joinlace, // change symbol...
+  "K": stake,
   "P": perspectiva1,
   "q": quinto,
+  "O": quadsub,
   "u": trisub,
-  //z --> zip
   "H": hollow,
   "Z": triangulate,
   "C": canonicalize,
@@ -7637,7 +7872,7 @@ const _2d_y_offset = CANVAS_HEIGHT/2;
 const BG_CLEAR = true; // clear background or colored?
 const BG_COLOR = "rgba(255,255,255,1.0)"; // background color
 let COLOR_METHOD = "signature"; // "area", "edges"
-let COLOR_SENSITIVITY = 2; // color sensitivity to variation 
+let COLOR_SENSITIVITY = 2; // color sensitivity to variation
                            // in congruence signature or planar area
 const ctx_linewidth = 0.5; // for outline of faces
 let PaintMode = "fillstroke";
@@ -7662,12 +7897,13 @@ const DEFAULT_RECIPES = [
   "oox4P7",
   "qqJ37",
   "aobD",
-  "qaI"
+  "qaI",
+  "A10u10I"
 ];
 
 // File-saving objects used to export txt/canvas-png
 const saveText = function(text, filename) {
-  const blb = new Blob([text], 
+  const blb = new Blob([text],
     {type: `text/plain;charset=${document.characterSet}`});
   saveAs(blb, filename);
 }
@@ -7721,14 +7957,14 @@ const init = function() {
     ctx.fillStyle = BG_COLOR;
     ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
   }
-    
+
   const exp = $('#expandcollapse');
   exp.click(function() {
     if (/minus/.test(exp.attr('src'))) {  // Contains 'minus'
       $('#morestats').hide();
       exp.attr('src', 'media/plus.png');
     } else {
-      $('#morestats').show();      
+      $('#morestats').show();
       exp.attr('src', 'media/minus.png');
     }
   });
@@ -7784,16 +8020,16 @@ const drawpoly = function(poly, tvec) {
     clr = mult((((illum / 2.0) + 0.5) * 0.7) + 0.3, clr);
 
     if ((PaintMode === "fill") || (PaintMode === "fillstroke")) {
-      ctx.fillStyle = 
+      ctx.fillStyle =
         `rgba(${round(clr[0]*255)}, ${round(clr[1]*255)}, ${round(clr[2]*255)}, ${1.0})`;
       ctx.fill();
       // make cartoon stroke (=black) / realistic stroke an option (=below)
-      ctx.strokeStyle = 
+      ctx.strokeStyle =
         `rgba(${round(clr[0]*255)}, ${round(clr[1]*255)}, ${round(clr[2]*255)}, ${1.0})`;
       ctx.stroke();
     }
     if (PaintMode === "fillstroke") {
-      ctx.fillStyle = 
+      ctx.fillStyle =
         `rgba(${round(clr[0]*255)}, ${round(clr[1]*255)}, ${round(clr[2]*255)}, ${1.0})`;
       ctx.fill();
       ctx.strokeStyle = "rgba(0,0,0,0.3)";  // light lines, less cartoony, more render-y
@@ -7908,16 +8144,16 @@ $( function() { //wait for page to load
     LastMouseX = e.clientX-$(this).offset().left;
     LastMouseY = e.clientY-($(this).offset().top-$(window).scrollTop());
     // calculate inverse projection of point to sphere
-    const tmpvec = invperspT(LastMouseX, LastMouseY, 
-                             _2d_x_offset, _2d_y_offset, 
-                             persp_z_max, persp_z_min, 
+    const tmpvec = invperspT(LastMouseX, LastMouseY,
+                             _2d_x_offset, _2d_y_offset,
+                             persp_z_max, persp_z_min,
                              persp_ratio, perspective_scale);
     // quick NaN check
     if ((tmpvec[0]*tmpvec[1]*tmpvec[2]*0) === 0) {
       LastSphVec = tmpvec;
     }
     // copy last transform state
-    globLastRotM = clone(globRotM); 
+    globLastRotM = clone(globRotM);
   });
   $("#poly").mouseup(function(e){
     e.preventDefault();
@@ -7938,7 +8174,7 @@ $( function() { //wait for page to load
         persp_ratio,perspective_scale);
 
       // quick NaN check
-      if (((SphVec[0]*SphVec[1]*SphVec[2]*0) === 0) && 
+      if (((SphVec[0]*SphVec[1]*SphVec[2]*0) === 0) &&
            ((LastSphVec[0]*LastSphVec[1]*LastSphVec[2]*0) === 0)) {
         globRotM = mm3(getVec2VecRotM(LastSphVec, SphVec), globLastRotM);
       }
@@ -7957,7 +8193,7 @@ $( function() { //wait for page to load
     PaintMode = "fill";
     drawShape();
   });
-  
+
   $("#fillandstroke").click(function(e) {
     PaintMode = "fillstroke";
     drawShape();
@@ -7967,7 +8203,7 @@ $( function() { //wait for page to load
     globRotM = vec_rotm(PI/2,0,1,0);
     drawShape();
   });
-  
+
   $("#toprot").click(function(e) {
     globRotM = vec_rotm(PI/2,1,0,0);
     drawShape();
