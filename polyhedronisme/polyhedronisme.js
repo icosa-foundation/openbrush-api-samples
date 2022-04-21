@@ -6714,6 +6714,7 @@ const quinto = function(poly){
 // inset / extrude / "Loft" operator
 // ------------------------------------------------------------------------------------------
 const insetN = function(poly, n, inset_dist, popout_dist){
+  console.log(`n: ${n} inset_dist: ${inset_dist} popout_dist: ${popout_dist}`);
   let f, i, v;
   if (!n) { n = 0; }
   if (inset_dist===undefined) { inset_dist = 0.5; }
@@ -7791,21 +7792,22 @@ const opmap = {
 
 // list of basic equivalences, easier to replace before parsing
 const specreplacements = [
-  [/e/g, "aa"],   // e --> aa   (abbr. for explode)
-  [/i/g, "aaa"],[/z/g, "dk"],[/n/g, "kd"],  // i --> aaa  (abbr. for ambo explode)
-  [/b/g, "ta"],   // b --> ta   (abbr. for bevel)
-  [/o/g, "jj"],   // o --> jj   (abbr. for ortho)
-  [/m/g, "kj"],   // m --> kj   (abbr. for meta)
-  [/t(\d*)/g, "dk$1d"],  // t(n) --> dk(n)d  (dual operations)
-  [/j/g, "dad"],  // j --> dad  (dual operations) # Why not j --> da ?
-  [/s/g, "dgd"],  // s --> dgd  (dual operations) # Why not s --> dg ?
-  [/dd/g, ""],    // dd --> null  (order 2)
-  [/ad/g, "a"],   // ad --> a   (a_ = ad_)
-  [/gd/g, "g"],   // gd --> g   (g_ = gd_)
-  [/aO/g, "aC"],  // aO --> aC  (for uniqueness)
-  [/aI/g, "aD"],  // aI --> aD  (for uniqueness)
-  [/gO/g, "gC"],  // gO --> gC  (for uniqueness)
-  [/gI/g, "gD"]];  // gI --> gD  (for uniqueness)
+
+
+  [/e/g, 'aa'],   // e --> aa   (abbr. for explode)
+  [/b/g, 'ta'],   // b --> ta   (abbr. for bevel)
+  [/o/g, 'jj'],   // o --> jj   (abbr. for ortho)
+  [/m/g, 'kj'],   // m --> kj   (abbr. for meta)
+  [/t(\d*)/g, 'dk$1d'],  // t(n) --> dk(n)d  (dual operations)
+  [/j/g, 'dad'],  // j --> dad  (dual operations) # Why not j --> da ?
+  [/s/g, 'dgd'],  // s --> dgd  (dual operations) # Why not s --> dg ?
+  [/dd/g, ''],    // dd --> null  (order 2)
+  [/ad/g, 'a'],   // ad --> a   (a_ = ad_)
+  [/gd/g, 'g'],   // gd --> g   (g_ = gd_)
+  [/aO$/g, 'aC'],  // aO --> aC  (for uniqueness)
+  [/aI$/g, 'aD'],  // aI --> aD  (for uniqueness)
+  [/gO$/g, 'gC'],  // gO --> gC  (for uniqueness)
+  [/gI$/g, 'gD']];  // gI --> gD  (for uniqueness)
 
 const getOps = function(notation) {
   let expanded = notation;
@@ -7887,20 +7889,25 @@ let LastSphVec = [1, 0, 0];
 // random grabbag of polyhedra
 const DEFAULT_RECIPES = [
   "C2dakD",
+  "kn4C40A0dA4",
   "aC20kD",
   "cC20dA6",
   "opD",
+  "qA40PA40oC",
   "PT",
   "loC",
   "jnD",
+  "knD",
   "dx4abT",
+  "dn6x4bT",
   "oox4P7",
   "qqJ37",
   "aobD",
   "qaI",
   "A10u10I",
   "HD",
-  "cqqO"
+  "cqqO",
+  "qaxI"
 ];
 
 // File-saving objects used to export txt/canvas-png
