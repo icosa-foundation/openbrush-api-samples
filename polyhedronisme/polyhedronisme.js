@@ -7898,7 +7898,9 @@ const DEFAULT_RECIPES = [
   "qqJ37",
   "aobD",
   "qaI",
-  "A10u10I"
+  "A10u10I",
+  "HD",
+  "cqqO"
 ];
 
 // File-saving objects used to export txt/canvas-png
