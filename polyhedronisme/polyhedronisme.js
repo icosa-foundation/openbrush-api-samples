@@ -6,6 +6,9 @@
 // Includes implementation of the conway polyhedral operators derived
 // from code by mathematician and mathematical sculptor
 // George W. Hart http://www.georgehart.com/
+//
+// Copyright 2019, Anselm Levskaya
+// Released under the MIT License
 
 
 // Math / Vector / Matrix Functions
@@ -7537,6 +7540,7 @@ const opmap = {
   "r": reflect,
   "c": chamfer,
   "w": whirl,
+  "n": insetN, //-->needle
   "x": extrudeN,
   "l": loft,
   "P": perspectiva1,
@@ -7560,14 +7564,13 @@ const specreplacements = [
   [/t(\d*)/g, "dk$1d"],  // t(n) --> dk(n)d  (dual operations)
   [/j/g, "dad"],  // j --> dad  (dual operations) # Why not j --> da ?
   [/s/g, "dgd"],  // s --> dgd  (dual operations) # Why not s --> dg ?
-  [/dd/g, "dd"],    // dd --> A1  (order 2)
-  [/ad/g, "ad"],   // ad --> a   (a_ = ad_)
-  [/gd/g, "gd"],   // gd --> g   (g_ = gd_)
-  [/aO/g, "aO"],  // aO --> aC  (for uniqueness)
-  [/aI/g, "aO"],  // aI --> aD  (for uniqueness)
-  [/gO/g, "gO"],  // gO --> gC  (for uniqueness)
-  [/gI/g, "gI"],[/X/g, "dzdI"]
-  ,[/W(\d*)/g, "dzdP$1"]];  // gI$144 --> gD$144  (for uniqueness)
+  [/dd/g, ""],    // dd --> null  (order 2)
+  [/ad/g, "a"],   // ad --> a   (a_ = ad_)
+  [/gd/g, "g"],   // gd --> g   (g_ = gd_)
+  [/aO/g, "aC"],  // aO --> aC  (for uniqueness)
+  [/aI/g, "aD"],  // aI --> aD  (for uniqueness)
+  [/gO/g, "gC"],  // gO --> gC  (for uniqueness)
+  [/gI/g, "gD"]];  // gI --> gD  (for uniqueness)
 
 const getOps = function(notation) {
   let expanded = notation;
@@ -7648,9 +7651,19 @@ let LastSphVec = [1, 0, 0];
 
 // random grabbag of polyhedra
 const DEFAULT_RECIPES = [
-  "C2dakD", "oC20kkkT", "kn4C40A0dA4", "opD",
-  "lT", "lK5oC", "knD", "dn6x4K5bT", "oox4P7",
-  "qqJ37", "aobD", "qaxI"];
+  "C2dakD",
+  "aC20kD",
+  "cC20dA6",
+  "opD",
+  "PT",
+  "loC",
+  "jnD",
+  "dx4abT",
+  "oox4P7",
+  "qqJ37",
+  "aobD",
+  "qaI"
+];
 
 // File-saving objects used to export txt/canvas-png
 const saveText = function(text, filename) {
