@@ -6714,7 +6714,6 @@ const quinto = function(poly){
 // inset / extrude / "Loft" operator
 // ------------------------------------------------------------------------------------------
 const insetN = function(poly, n, inset_dist, popout_dist){
-  console.log(`n: ${n} inset_dist: ${inset_dist} popout_dist: ${popout_dist}`);
   let f, i, v;
   if (!n) { n = 0; }
   if (inset_dist===undefined) { inset_dist = 0.5; }
@@ -7779,7 +7778,7 @@ const opmap = {
   "L": lace,
   "I": joinlace, // change symbol...
   "K": stake,
-  "P": perspectiva1,
+  "G": perspectiva1,
   "q": quinto,
   "O": quadsub,
   "u": trisub,
@@ -7893,8 +7892,8 @@ const DEFAULT_RECIPES = [
   "aC20kD",
   "cC20dA6",
   "opD",
-  "qA40PA40oC",
-  "PT",
+  "qA40GA40oC",
+  "GT",
   "loC",
   "jnD",
   "knD",

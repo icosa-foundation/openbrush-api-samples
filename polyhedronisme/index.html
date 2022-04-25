@@ -82,7 +82,7 @@
     <li>U<i>N</i> - 2N-sided cupola (N&ge;3, regular for 3,4,5)</li>
     <li>V<i>N</i> - 2N-sided anticupola (N&ge;3)</li>
     <li>J<i>N</i> - Nth Johnson Solid (1 to 92)</li>
-	<li>Z</i> - Square</li>
+	<li>Z</i> - Square (The only ops that will work are those that leave all original edges untouches like loft and lace)</li>
   </ul>
 
 <p>and <b>op</b> is one of these
@@ -94,14 +94,14 @@
   <li><b>k<i>N</i></b> - <a href="https://en.wikipedia.org/wiki/Kleetope">kis</a> on N-sided faces (if no N, then general kis)</li>
   <li><b>g</b> - gyro</li>
   <li><b>r</b> - reflect</li>
-  <li><b>e</b> - explode (a.k.a. <a href="https://en.wikipedia.org/wiki/Expansion_%28geometry%29">expand</a>, equiv. to <i>aa</i>) </li>
+  <li><b>e</b> - expand, equiv. to <i>aa</i>) </li>
   <li><b>b</b> - bevel (equiv. to <i>ta</i>) </li>
   <li><b>o</b> - ortho (equiv. to <i>jj</i>) </li>
   <li><b>m</b> - meta (equiv. to <i>k3j</i>) </li>
   <li><b>t<i>N</i></b> - truncate vertices of degree N (equiv. to <i>dkNd</i>; if no N, then truncate all vertices) </li>
   <li><b>j</b> - join (equiv. to <i>dad</i>) </li>
   <li><b>s</b> - snub (equiv. to <i>dgd</i>) </li>
-  <li><b>p</b> - propellor</li>
+  <li><b>p</b> - propeller</li>
   <li><b>c</b> - chamfer</li>
   <li><b>w</b> - whirl</li>
   <li><b>q</b> - quinto</li>
@@ -109,13 +109,13 @@
   <li><b>K</b> - stake</li>
   <li><b>L</b> - lace</li>
   <li><b>I</b> - join-lace</li>
-  <li><b>P</b> - opposite-lace</i></li>
+  <li><b>G</b> - opposite-lace</i></li>
+  <li><b>n<i>N</i></b> - needle on N sided faces</li>
 </ul>
 
 <p>Also, some newer, experimental operators:</p>
 
 <ul>
-  <li><b>n<i>N</i></b> - i<b>n</b>setN </li>
   <li><b>x<i>N</i></b> - e<b>x</b>trudeN </li>
   <li><b>Z</b> - triangulate</li>
   <li><b>H</b>(<i>inset</i>,<i>depth</i>) - hollow - useful for 3D printing, makes a
@@ -127,6 +127,7 @@
   a recipe!</li>-->
   <li><b>u<i>N</i></b> - limited version of the Goldberg-Coxeter u_n operator
   (for triangular meshes only)</li>
+  <li><b>v<i>N</i></b> - Similar but for quads (buggy)</li>
 </ul>
 
 <p> There are more complicated, parameterized forms for <b>k</b> and <b>n</b>: </p>
